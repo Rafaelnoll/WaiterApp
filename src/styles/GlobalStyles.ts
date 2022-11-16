@@ -1,14 +1,14 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
-import GeneralSansRegularWoff2 from '../assets/fonts/GeneralSans-Regular.woff2';
-import GeneralSansRegularWoff from '../assets/fonts/GeneralSans-Regular.woff';
-import GeneralSansRegularTtf from '../assets/fonts/GeneralSans-Regular.ttf';
-import GeneralSansMediumWoff2 from '../assets/fonts/GeneralSans-Medium.woff2';
-import GeneralSansMediumWoff from '../assets/fonts/GeneralSans-Medium.woff';
-import GeneralSansMediumTtf from '../assets/fonts/GeneralSans-Medium.ttf';
-import GeneralSansSemiboldWoff2 from '../assets/fonts/GeneralSans-Semibold.woff2';
-import GeneralSansSemiboldWoff from '../assets/fonts/GeneralSans-Semibold.woff';
-import GeneralSansSemiboldTtf from '../assets/fonts/GeneralSans-Semibold.ttf';
+import GeneralSansRegularWoff2 from "../assets/fonts/GeneralSans-Regular.woff2";
+import GeneralSansRegularWoff from "../assets/fonts/GeneralSans-Regular.woff";
+import GeneralSansRegularTtf from "../assets/fonts/GeneralSans-Regular.ttf";
+import GeneralSansMediumWoff2 from "../assets/fonts/GeneralSans-Medium.woff2";
+import GeneralSansMediumWoff from "../assets/fonts/GeneralSans-Medium.woff";
+import GeneralSansMediumTtf from "../assets/fonts/GeneralSans-Medium.ttf";
+import GeneralSansSemiboldWoff2 from "../assets/fonts/GeneralSans-Semibold.woff2";
+import GeneralSansSemiboldWoff from "../assets/fonts/GeneralSans-Semibold.woff";
+import GeneralSansSemiboldTtf from "../assets/fonts/GeneralSans-Semibold.ttf";
 
 export const GlobalStyles = createGlobalStyle`
 @font-face {
