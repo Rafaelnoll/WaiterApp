@@ -14,15 +14,37 @@ export function Orders() {
 			});
 	}, []);
 
+	function handleCancelOrder(orderId: string) {
+		setOrders((prevState) => prevState.filter((order) => order._id !== orderId));
+	}
+
 	const waitingOrders = orders.filter((order) => order.status === "WAITING");
 	const inProductionOrders = orders.filter((order) => order.status === "IN_PRODUCTION");
 	const doneOrders = orders.filter((order) => order.status === "DONE");
 
 	return (
 		<Container>
-			<OrdersBoard icon="🕒" title="Fila de espera" orders={waitingOrders} />
-			<OrdersBoard icon="👩‍🍳" title="Em produção" orders={inProductionOrders} />
-			<OrdersBoard icon="✅" title="Pronto!" orders={doneOrders} />
+			<OrdersBoard
+				icon="🕒"
+				title="Fila de espera"
+				orders={waitingOrders}
+				onCancelOrder={handleCancelOrder}
+
+			/>
+
+			<OrdersBoard
+				icon="👩‍🍳"
+				title="Em produção"
+				orders={inProductionOrders}
+				onCancelOrder={handleCancelOrder}
+			/>
+
+			<OrdersBoard
+				icon="✅"
+				title="Pronto!"
+				orders={doneOrders}
+				onCancelOrder={handleCancelOrder}
+			/>
 		</Container>
 	);
 }

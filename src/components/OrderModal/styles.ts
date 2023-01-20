@@ -124,6 +124,11 @@ export const OrderActions = styled.footer`
 	display:flex;
 	flex-direction:column;
 
+	button:disabled{
+		opacity:0.5;
+		cursor: not-allowed;
+	}
+
 	.primary{
 		display:flex;
 		justify-content:center;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Order } from "../../types/Order";
+import { api } from "../../utils/api";
 import { OrderModal } from "../OrderModal";
 import { BoardContainer, OrderContainer } from "./styles";
 
@@ -7,16 +8,17 @@ interface OrdersBoardPorps {
 	icon: string,
 	title: string,
 	orders: Order[],
+	onCancelOrder: (orderId: string) => void;
 }
 
-export function OrdersBoard({ icon, title, orders }: OrdersBoardPorps) {
-
+export function OrdersBoard({ icon, title, orders, onCancelOrder }: OrdersBoardPorps) {
 	const [isModalVisible, setIsModalVisible] = useState(true);
 	const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	function handleOpenModal(order: Order) {
-		setIsModalVisible(!isModalVisible);
 		setSelectedOrder(order);
+		setIsModalVisible(true);
 	}
 
 	function handleCloseModal() {
@@ -24,9 +26,24 @@ export function OrdersBoard({ icon, title, orders }: OrdersBoardPorps) {
 		setSelectedOrder(null);
 	}
 
+	async function handleCancelOrder() {
+		if(!selectedOrder) return;
+		setIsLoading(true);
+		await api.delete(`/orders/${selectedOrder._id}`);
+		onCancelOrder(selectedOrder._id);
+		setIsLoading(false);
+		setIsModalVisible(false);
+	}
+
 	return (
 		<BoardContainer>
-			<OrderModal visible={isModalVisible} order={selectedOrder} onClose={handleCloseModal} />
+			<OrderModal
+				visible={isModalVisible}
+				order={selectedOrder}
+				onClose={handleCloseModal}
+				onCancelOrder={handleCancelOrder}
+				isLoading={isLoading}
+			/>
 			<header>
 				<span>{icon}</span>
 				<strong>{title}</strong>

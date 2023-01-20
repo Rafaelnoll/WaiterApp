@@ -5,12 +5,20 @@ import { Order } from "../../types/Order";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 interface OrderModalProps {
-	visible: boolean,
-	order: Order | null,
-	onClose: () => void,
+	visible: boolean;
+	order: Order | null;
+	onClose: () => void;
+	onCancelOrder: () => void;
+	isLoading: boolean;
 }
 
-export function OrderModal({ visible, order, onClose }: OrderModalProps) {
+export function OrderModal({
+	visible,
+	order,
+	onClose,
+	onCancelOrder,
+	isLoading
+}: OrderModalProps) {
 
 	useEffect(() => {
 		function handleKeyDown(event: KeyboardEvent) {
@@ -92,7 +100,11 @@ export function OrderModal({ visible, order, onClose }: OrderModalProps) {
 					</div>
 				</OrderDetails>
 				<OrderActions>
-					<button type="button" className="primary">
+					<button
+						type="button"
+						className="primary"
+						disabled={isLoading}
+					>
 						<span>
 							{order.status === "WAITING" && "👩‍🍳"}
 							{order.status === "IN_PRODUCTION" && "✅"}
@@ -102,7 +114,14 @@ export function OrderModal({ visible, order, onClose }: OrderModalProps) {
 							{order.status === "IN_PRODUCTION" && "Concluir Pedido"}
 						</strong>
 					</button>
-					<button type="button" className="secondary">Cancelar Pedido</button>
+					<button
+						type="button"
+						className="secondary"
+						onClick={onCancelOrder}
+						disabled={isLoading}
+					>
+						Cancelar Pedido
+					</button>
 				</OrderActions>
 			</ModalBody>
 		</OverLay>
