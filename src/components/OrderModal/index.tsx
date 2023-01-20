@@ -38,7 +38,7 @@ export function OrderModal({ visible, order, onClose }: OrderModalProps) {
 		<OverLay>
 			<ModalBody>
 				<header>
-					<strong>Mesa {order?.table}</strong>
+					<strong>Mesa {order.table}</strong>
 					<button type="button" onClick={onClose}>
 						<img src={CloseIcon} alt="Botão para fechar o modal" />
 					</button>
