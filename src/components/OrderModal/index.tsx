@@ -7,9 +7,10 @@ import { formatCurrency } from "../../utils/formatCurrency";
 interface OrderModalProps {
 	visible: boolean;
 	order: Order | null;
+	isLoading: boolean;
 	onClose: () => void;
 	onCancelOrder: () => void;
-	isLoading: boolean;
+	onChangeOrderStatus: () => void;
 }
 
 export function OrderModal({
@@ -17,6 +18,7 @@ export function OrderModal({
 	order,
 	onClose,
 	onCancelOrder,
+	onChangeOrderStatus,
 	isLoading
 }: OrderModalProps) {
 
@@ -100,20 +102,24 @@ export function OrderModal({
 					</div>
 				</OrderDetails>
 				<OrderActions>
-					<button
-						type="button"
-						className="primary"
-						disabled={isLoading}
-					>
-						<span>
-							{order.status === "WAITING" && "👩‍🍳"}
-							{order.status === "IN_PRODUCTION" && "✅"}
-						</span>
-						<strong>
-							{order.status === "WAITING" && "Iniciar Produção"}
-							{order.status === "IN_PRODUCTION" && "Concluir Pedido"}
-						</strong>
-					</button>
+					{order.status !== "DONE" && (
+						<button
+							type="button"
+							className="primary"
+							disabled={isLoading}
+							onClick={onChangeOrderStatus}
+						>
+							<span>
+								{order.status === "WAITING" && "👩‍🍳"}
+								{order.status === "IN_PRODUCTION" && "✅"}
+							</span>
+							<strong>
+								{order.status === "WAITING" && "Iniciar Produção"}
+								{order.status === "IN_PRODUCTION" && "Concluir Pedido"}
+							</strong>
+						</button>
+					)}
+
 					<button
 						type="button"
 						className="secondary"
