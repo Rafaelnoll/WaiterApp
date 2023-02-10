@@ -1,17 +1,21 @@
 import React from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { GlobalStyles } from "./styles/GlobalStyles";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
-import { Orders } from "./components/Orders";
+import { Home } from "./pages/Home";
+import { ProductsManeger } from "./pages/ProductsManeger";
+import { GlobalStyles } from "./styles/GlobalStyles";
 
 function App() {
 	return (
 		<>
 			<GlobalStyles />
 			<Header />
-			<Orders />
-			<ToastContainer position="bottom-center" />
+			<BrowserRouter>
+				<Routes>
+					<Route path="/maneger" element={<ProductsManeger />} />
+					<Route path="/" element={<Home />} />
+				</Routes>
+			</BrowserRouter>
 		</>
 	);
 }
