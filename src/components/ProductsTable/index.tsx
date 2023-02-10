@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Product } from "../../types/Product";
 import { api } from "../../utils/api";
 import { ProductCard } from "../ProductCard";
-import { ProductsTableContainer, ProductsTableContent } from "./styles";
+import { ProductsTableContainer, ProductsTableContent, ProductsTablePagination } from "./styles";
+import NextArrow from "../../assets/images/next-arrow.svg";
+import PreviousArrow from "../../assets/images/previous-arrow.svg";
 
 export function ProductsTable() {
 	const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -11,9 +13,16 @@ export function ProductsTable() {
 
 	const productsPerPage = 6;
 	const pagesVisited = pageNumber * productsPerPage;
+	const pagesLimit = pagesVisited + productsPerPage;
 
 	function handleNextPage() {
-		console.log("next");
+		if (allProducts.length < pagesLimit) return;
+		setPageNumber(prevState => prevState + 1);
+	}
+
+	function handlePreviousPage() {
+		if (pageNumber === 0) return;
+		setPageNumber(prevState => prevState - 1);
 	}
 
 	useEffect(() => {
@@ -25,6 +34,10 @@ export function ProductsTable() {
 
 		loadProducts();
 	}, []);
+
+	useEffect(() => {
+		setProductsShown(allProducts.slice(pagesVisited, pagesLimit));
+	}, [pageNumber]);
 
 	return (
 		<ProductsTableContainer>
@@ -48,6 +61,15 @@ export function ProductsTable() {
 					))}
 				</tbody>
 			</ProductsTableContent>
+			<ProductsTablePagination>
+				<button onClick={handlePreviousPage}>
+					<img src={PreviousArrow} />Anterior
+				</button>
+				<span>{pageNumber + 1} / {(allProducts.length / productsPerPage).toFixed(0)}</span>
+				<button onClick={handleNextPage}>
+					Próximo <img src={NextArrow} />
+				</button>
+			</ProductsTablePagination>
 		</ProductsTableContainer>
 	);
 }
