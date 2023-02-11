@@ -16,6 +16,7 @@ export const ProductCardTr = styled.tr`
 
 export const ProductCardImage = styled.img`
 	max-width:120px;
+	max-height: 60px;
 	border-radius:8px;
 `;
 

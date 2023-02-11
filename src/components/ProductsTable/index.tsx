@@ -85,7 +85,7 @@ export function ProductsTable() {
 					<button onClick={handlePreviousPage}>
 						<img src={PreviousArrow} />Anterior
 					</button>
-					<span>{pageNumber + 1} / {(allProducts.length / productsPerPage).toFixed(0)}</span>
+					<span>{pageNumber + 1} / {Math.ceil(allProducts.length / productsPerPage)}</span>
 					<button onClick={handleNextPage}>
 						Próximo <img src={NextArrow} />
 					</button>
