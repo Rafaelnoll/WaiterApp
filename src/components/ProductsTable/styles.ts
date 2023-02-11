@@ -6,6 +6,28 @@ export const ProductsTableContainer = styled.div`
  	margin:32px 0;
 `;
 
+export const ProductsTableActions = styled.div`
+	width: 100%;
+	padding:0 16px;
+	margin-bottom:32px;
+	display:flex;
+	justify-content:end;
+	align-items: center;
+
+	button{
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		gap:10px;
+		color:#666;
+		font-weight: 700;
+		font-size: 14px;
+		padding:4px;
+		background:transparent;
+		border:none;
+	}
+`;
+
 export const ProductsTableContent = styled.table`
 	width:100%;
 	border-spacing: 16px;

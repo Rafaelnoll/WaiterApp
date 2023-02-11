@@ -29,8 +29,4 @@ export const ProductCardActions = styled.div`
 		background: transparent;
 		border:none;
 	}
-
-	button:hover{
-		color:red;
-	}
 `;
