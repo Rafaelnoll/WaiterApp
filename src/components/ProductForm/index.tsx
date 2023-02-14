@@ -23,6 +23,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 	const [price, setPrice] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState("");
 	const [description, setDescription] = useState("");
+	const [isFormValid, setIsFormValid] = useState(false);
 
 	useEffect(() => {
 		async function loadCategories() {
@@ -32,6 +33,10 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 
 		loadCategories();
 	}, []);
+
+	useEffect(() => {
+		handleVerifyForm();
+	});
 
 	function handleSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
 		if (!e.target.files) return;
@@ -43,6 +48,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 	async function handleCreateProduct(e: MouseEvent) {
 		e.preventDefault();
 		if (!file) return;
+		if(!isFormValid) return;
 
 		const formData = new FormData();
 
@@ -67,6 +73,28 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 		onCloseModal();
 	}
 
+	function handleVerifyForm() {
+		let isValid = true;
+
+		if (name.length === 0) {
+			isValid = false;
+		}
+		if (price.length === 0) {
+			isValid = false;
+		}
+		if (description.length === 0) {
+			isValid = false;
+		}
+		if(!selectedCategory){
+			isValid = false;
+		}
+		if(!file){
+			isValid = false;
+		}
+
+		setIsFormValid(isValid);
+	}
+
 	return (
 		<ProductModalForm
 			method="post"
@@ -74,8 +102,9 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 			action="http://localhost:3001/products"
 		>
 			<div className="form-top-container">
+
 				<ProductModalFormLabel>
-					<span>Nome</span>
+					<strong>Nome</strong>
 					<input
 						type="Text"
 						placeholder="Nome do produto..."
@@ -85,7 +114,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 					/>
 				</ProductModalFormLabel>
 				<ProductModalFormLabel>
-					<span>Preço</span>
+					<strong>Preço</strong>
 					<input
 						type="number"
 						placeholder="Preço do produto..."
@@ -138,7 +167,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 				</ProductModalFormFileImageContainer>
 			</div>
 			<ProductModalFormButtonsContainer>
-				<button className="button-create" onClick={(e) => handleCreateProduct(e)}>
+				<button className="button-create" disabled={!isFormValid} onClick={(e) => handleCreateProduct(e)}>
 					Criar Produto
 				</button>
 

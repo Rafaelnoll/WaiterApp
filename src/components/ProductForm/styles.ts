@@ -24,7 +24,7 @@ export const ProductModalFormLabel = styled.div`
 	flex-direction:column;
 	width:100%;
 
-	span{
+	strong{
 		text-align:end;
 		font-weight: 500;
 		font-size: 16px;
@@ -146,6 +146,11 @@ export const ProductModalFormButtonsContainer = styled.div`
 	.button-create{
 		background-color:#D73035;
 		color:#fff;
+	}
+
+	.button-create:disabled{
+		background-color:#999;
+		cursor: not-allowed;
 	}
 
 	.button-cancel{
