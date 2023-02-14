@@ -12,9 +12,16 @@ interface ProductCardProps {
 	imagePath: string;
 	name: string;
 	price: number;
+	id: string;
+	onSelectProduct: (id: string) => void;
 }
 
-export function ProductCard({ imagePath, name, price }: ProductCardProps) {
+export function ProductCard({ imagePath, name, price, id, onSelectProduct }: ProductCardProps) {
+
+	function handleSelectProduct() {
+		onSelectProduct(id);
+	}
+
 	return (
 		<ProductCardTr>
 			<td>
@@ -24,7 +31,7 @@ export function ProductCard({ imagePath, name, price }: ProductCardProps) {
 			<td>{formatCurrency(price)}</td>
 			<td>
 				<ProductCardActions>
-					<button><img src={EditIcon} /></button>
+					<button onClick={handleSelectProduct}><img src={EditIcon} /></button>
 					<button><img src={DeleteIcon} /></button>
 				</ProductCardActions>
 			</td>
