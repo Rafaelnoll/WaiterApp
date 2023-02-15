@@ -18,6 +18,7 @@ export function ModalDelete({ onCloseModal, productId }: ModalDeleteProps) {
 
 	async function handleDeleteProduct() {
 		await api.delete(`/products/${productId}`);
+		onCloseModal();
 	}
 
 	return (
