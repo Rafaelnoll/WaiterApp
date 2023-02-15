@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import socketIo from "socket.io-client";
 import { Product } from "../../types/Product";
 import { api } from "../../utils/api";
 import { ProductCard } from "../ProductCard";
@@ -29,7 +30,7 @@ export function ProductsTable() {
 	const pagesLimit = pagesVisited + productsPerPage;
 
 	function handleNextPage() {
-		if (allProducts.length < pagesLimit) return;
+		if (allProducts.length <= pagesLimit) return;
 		setPageNumber(prevState => prevState + 1);
 	}
 
@@ -70,7 +71,17 @@ export function ProductsTable() {
 
 	useEffect(() => {
 		setProductsShown(allProducts.slice(pagesVisited, pagesLimit));
-	}, [pageNumber]);
+	}, [pageNumber, allProducts]);
+
+	useEffect(() => {
+		const socket = socketIo("http://localhost:3001", {
+			transports: ["websocket"],
+		});
+
+		socket.on("product@new", (product) => {
+			setAllProducts(prevState => prevState.concat(product));
+		});
+	}, []);
 
 	return (
 		<>
