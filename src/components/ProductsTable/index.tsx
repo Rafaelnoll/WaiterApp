@@ -13,12 +13,15 @@ import PreviousArrow from "../../assets/images/previous-arrow.svg";
 import CreateIcon from "../../assets/images/create-icon.svg";
 import { ProductModal } from "../ProductModal";
 import { ProductModalEdit } from "../ProductModalEdit";
+import { ModalDelete } from "../ModalDelete";
 
 export function ProductsTable() {
 	const [allProducts, setAllProducts] = useState<Product[]>([]);
 	const [productsShown, setProductsShown] = useState<Product[]>([]);
 	const [pageNumber, setPageNumber] = useState(0);
 	const [isProductModalVisible, setIsProductModalVisible] = useState(false);
+	const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
+	const [isProductModalEditVisible, setIsProductModalEditVisible] = useState(false);
 	const [selectedProduct, setSelectedProduct] = useState("");
 
 	const productsPerPage = 6;
@@ -40,7 +43,19 @@ export function ProductsTable() {
 	}
 
 	function handleCloseProductModalEdit() {
-		setSelectedProduct("");
+		setIsProductModalEditVisible(false);
+	}
+
+	function handleOpenProductModalEdit() {
+		setIsProductModalEditVisible(true);
+	}
+
+	function handleCloseModalDelete() {
+		setIsModalDeleteVisible(false);
+	}
+
+	function handleOpenModalDelete() {
+		setIsModalDeleteVisible(true);
 	}
 
 	useEffect(() => {
@@ -59,7 +74,8 @@ export function ProductsTable() {
 
 	return (
 		<>
-			{selectedProduct && <ProductModalEdit productId={selectedProduct} onCloseModal={handleCloseProductModalEdit} />}
+			{isModalDeleteVisible && <ModalDelete productId={selectedProduct} onCloseModal={handleCloseModalDelete} />}
+			{isProductModalEditVisible && <ProductModalEdit productId={selectedProduct} onCloseModal={handleCloseProductModalEdit} />}
 			{isProductModalVisible && <ProductModal onCloseModal={handleCloseProductModal} />}
 			<ProductsTableContainer>
 				<ProductsTableActions>
@@ -86,6 +102,8 @@ export function ProductsTable() {
 								name={product.name}
 								price={product.price}
 								onSelectProduct={setSelectedProduct}
+								onEdit={handleOpenProductModalEdit}
+								onDelete={handleOpenModalDelete}
 							/>
 						))}
 					</tbody>

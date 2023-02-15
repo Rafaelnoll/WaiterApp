@@ -14,12 +14,28 @@ interface ProductCardProps {
 	price: number;
 	id: string;
 	onSelectProduct: (id: string) => void;
+	onEdit: () => void;
+	onDelete: () => void;
 }
 
-export function ProductCard({ imagePath, name, price, id, onSelectProduct }: ProductCardProps) {
+export function ProductCard({
+	imagePath,
+	name,
+	price,
+	id,
+	onSelectProduct,
+	onEdit,
+	onDelete
+}: ProductCardProps) {
 
-	function handleSelectProduct() {
+	function handleEditProduct() {
 		onSelectProduct(id);
+		onEdit();
+	}
+
+	function handleDeleteProduct() {
+		onSelectProduct(id);
+		onDelete();
 	}
 
 	return (
@@ -31,8 +47,8 @@ export function ProductCard({ imagePath, name, price, id, onSelectProduct }: Pro
 			<td>{formatCurrency(price)}</td>
 			<td>
 				<ProductCardActions>
-					<button onClick={handleSelectProduct}><img src={EditIcon} /></button>
-					<button><img src={DeleteIcon} /></button>
+					<button onClick={handleEditProduct}><img src={EditIcon} /></button>
+					<button onClick={handleDeleteProduct}><img src={DeleteIcon} /></button>
 				</ProductCardActions>
 			</td>
 		</ProductCardTr>
