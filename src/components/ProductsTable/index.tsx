@@ -81,6 +81,11 @@ export function ProductsTable() {
 		socket.on("product@new", (product) => {
 			setAllProducts(prevState => prevState.concat(product));
 		});
+
+		socket.on("product@deleted", (productId) => {
+			setAllProducts(prevState => prevState.filter((product => product._id !== productId)));
+		});
+
 	}, []);
 
 	return (
