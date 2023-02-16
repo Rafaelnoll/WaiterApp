@@ -48,7 +48,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 	async function handleCreateProduct(e: MouseEvent) {
 		e.preventDefault();
 		if (!file) return;
-		if(!isFormValid) return;
+		if (!isFormValid) return;
 
 		const formData = new FormData();
 
@@ -85,10 +85,10 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 		if (description.length === 0) {
 			isValid = false;
 		}
-		if(!selectedCategory){
+		if (!selectedCategory) {
 			isValid = false;
 		}
-		if(!file){
+		if (!file) {
 			isValid = false;
 		}
 
@@ -96,11 +96,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 	}
 
 	return (
-		<ProductModalForm
-			method="post"
-			encType="multipart/form-data"
-			action="http://localhost:3001/products"
-		>
+		<ProductModalForm>
 			<div className="form-top-container">
 
 				<ProductModalFormLabel>

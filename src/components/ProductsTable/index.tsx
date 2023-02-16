@@ -86,6 +86,15 @@ export function ProductsTable() {
 			setAllProducts(prevState => prevState.filter((product => product._id !== productId)));
 		});
 
+		socket.on("product@updated", (productReceived) => {
+			setAllProducts(prevState => {
+				const productIndex = prevState.findIndex(product=> product._id === productReceived._id);
+				const newArray = new Array(...prevState);
+				newArray[productIndex] = productReceived;
+				return newArray;
+			});
+		});
+
 	}, []);
 
 	return (

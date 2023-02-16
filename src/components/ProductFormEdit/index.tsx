@@ -63,16 +63,16 @@ export function ProductFormEdit({ onCloseModal, productId }: ProductFormEditProp
 		if (!file) return;
 		if (!isFormValid) return;
 
-		const formData = new FormData();
+		const modifiedProduct = {
+			name,
+			price,
+			description,
+			category: selectedCategory
+		};
 
-		formData.append("image", file);
-		formData.append("name", name);
-		formData.append("description", description);
-		formData.append("price", price);
-		formData.append("category", selectedCategory);
+		await api.patch(`/products/${productId}`, modifiedProduct);
 
-		// await here
-
+		onCloseModal();
 		toast.success("Produto criado!");
 	}
 
