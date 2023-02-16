@@ -73,7 +73,7 @@ export function ProductFormEdit({ onCloseModal, productId }: ProductFormEditProp
 		await api.patch(`/products/${productId}`, modifiedProduct);
 
 		onCloseModal();
-		toast.success("Produto criado!");
+		toast.success("Produto editado!");
 	}
 
 	function handleCancel(e: MouseEvent) {
