@@ -1,17 +1,18 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
 	ProductModalContainer,
 	ProductModalContent,
 	ProductModalHeader,
 } from "./styles";
 import CloseIcon from "../../assets/images/close-icon.svg";
-import { ProductForm } from "../ProductForm";
 
 interface ProductModalProps {
 	onCloseModal: () => void;
+	title?: string;
+	children?: ReactNode
 }
 
-export function ProductModal({ onCloseModal }: ProductModalProps) {
+export function ProductModal({ onCloseModal, title, children }: ProductModalProps) {
 	return (
 		<ProductModalContainer>
 			<ProductModalContent>
@@ -20,10 +21,10 @@ export function ProductModal({ onCloseModal }: ProductModalProps) {
 						<img src={CloseIcon} />
 					</button>
 					<strong>
-						Criar Produto
+						{title}
 					</strong>
 				</ProductModalHeader>
-				<ProductForm onCloseModal={onCloseModal}/>
+				{children}
 			</ProductModalContent>
 		</ProductModalContainer>
 	);

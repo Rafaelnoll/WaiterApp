@@ -13,8 +13,9 @@ import NextArrow from "../../assets/images/next-arrow.svg";
 import PreviousArrow from "../../assets/images/previous-arrow.svg";
 import CreateIcon from "../../assets/images/create-icon.svg";
 import { ProductModal } from "../ProductModal";
-import { ProductModalEdit } from "../ProductModalEdit";
 import { ModalDelete } from "../ModalDelete";
+import { ProductForm } from "../ProductForm";
+import { ProductFormEdit } from "../ProductFormEdit";
 
 export function ProductsTable() {
 	const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -88,7 +89,7 @@ export function ProductsTable() {
 
 		socket.on("product@updated", (productReceived) => {
 			setAllProducts(prevState => {
-				const productIndex = prevState.findIndex(product=> product._id === productReceived._id);
+				const productIndex = prevState.findIndex(product => product._id === productReceived._id);
 				const newArray = new Array(...prevState);
 				newArray[productIndex] = productReceived;
 				return newArray;
@@ -100,8 +101,16 @@ export function ProductsTable() {
 	return (
 		<>
 			{isModalDeleteVisible && <ModalDelete productId={selectedProduct} onCloseModal={handleCloseModalDelete} />}
-			{isProductModalEditVisible && <ProductModalEdit productId={selectedProduct} onCloseModal={handleCloseProductModalEdit} />}
-			{isProductModalVisible && <ProductModal onCloseModal={handleCloseProductModal} />}
+			{isProductModalEditVisible && (
+				<ProductModal onCloseModal={handleCloseProductModalEdit} title="Editar produto">
+					<ProductFormEdit onCloseModal={handleCloseProductModalEdit} productId={selectedProduct} />
+				</ProductModal>
+			)}
+			{isProductModalVisible && (
+				<ProductModal onCloseModal={handleCloseProductModal} title="Criar produto">
+					<ProductForm onCloseModal={handleCloseProductModal} />
+				</ProductModal>
+			)}
 			<ProductsTableContainer>
 				<ProductsTableActions>
 					<button onClick={() => setIsProductModalVisible(true)}>
