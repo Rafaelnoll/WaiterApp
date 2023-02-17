@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 export const ProductsTableContainer = styled.div`
 	width:100%;
+	max-width: 1215px;
  	padding:0 16px;
- 	margin:32px 0;
+ 	margin:32px auto;
 `;
 
 export const ProductsTableActions = styled.div`
