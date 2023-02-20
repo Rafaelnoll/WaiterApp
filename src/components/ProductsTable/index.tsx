@@ -7,7 +7,8 @@ import {
 	ProductsTableContainer,
 	ProductsTableActions,
 	ProductsTableContent,
-	ProductsTablePagination
+	ProductsTablePagination,
+	ProductsTableCenterContent
 } from "./styles";
 import NextArrow from "../../assets/images/next-arrow.svg";
 import PreviousArrow from "../../assets/images/previous-arrow.svg";
@@ -16,6 +17,7 @@ import { ProductModal } from "../ProductModal";
 import { ModalDelete } from "../ModalDelete";
 import { ProductForm } from "../ProductForm";
 import { ProductFormEdit } from "../ProductFormEdit";
+import EmptySVG from "../../assets/images/empty.svg";
 
 export function ProductsTable() {
 	const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -118,40 +120,50 @@ export function ProductsTable() {
 						<span>Criar produto</span>
 					</button>
 				</ProductsTableActions>
-				<ProductsTableContent>
-					<thead>
-						<tr>
-							<th>Imagem</th>
-							<th>Nome</th>
-							<th>Preço</th>
-							<th>Ações</th>
-						</tr>
-					</thead>
-					<tbody>
-						{productsShown.map((product) => (
-							<ProductCard
-								key={product._id}
-								id={product._id}
-								imagePath={product.imagePath}
-								name={product.name}
-								price={product.price}
-								onSelectProduct={setSelectedProduct}
-								onEdit={handleOpenProductModalEdit}
-								onDelete={handleOpenModalDelete}
-							/>
-						))}
-					</tbody>
-				</ProductsTableContent>
-				<ProductsTablePagination>
-					<button onClick={handlePreviousPage}>
-						<img src={PreviousArrow} />Anterior
-					</button>
-					<span>{pageNumber + 1} / {Math.ceil(allProducts.length / productsPerPage)}</span>
-					<button onClick={handleNextPage}>
-						Próximo <img src={NextArrow} />
-					</button>
-				</ProductsTablePagination>
-			</ProductsTableContainer>
+
+				{allProducts.length === 0
+					? (
+						<ProductsTableCenterContent>
+							<img src={EmptySVG} />
+							<strong>Nenhum produto criado!</strong>
+						</ProductsTableCenterContent>
+					) : (
+						<><ProductsTableContent>
+							<thead>
+								<tr>
+									<th>Imagem</th>
+									<th>Nome</th>
+									<th>Preço</th>
+									<th>Ações</th>
+								</tr>
+							</thead>
+							<tbody>
+								{productsShown.map((product) => (
+									<ProductCard
+										key={product._id}
+										id={product._id}
+										imagePath={product.imagePath}
+										name={product.name}
+										price={product.price}
+										onSelectProduct={setSelectedProduct}
+										onEdit={handleOpenProductModalEdit}
+										onDelete={handleOpenModalDelete} />
+								))}
+							</tbody>
+						</ProductsTableContent>
+						<ProductsTablePagination>
+							<button onClick={handlePreviousPage}>
+								<img src={PreviousArrow} />Anterior
+							</button>
+							<span>{pageNumber + 1} / {Math.ceil(allProducts.length / productsPerPage)}</span>
+							<button onClick={handleNextPage}>
+									Próximo <img src={NextArrow} />
+							</button>
+						</ProductsTablePagination>
+						</>
+					)
+				}
+			</ProductsTableContainer >
 		</>
 	);
 }
