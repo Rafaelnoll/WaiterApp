@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import socketIo from "socket.io-client";
 import { Product } from "../../types/Product";
 import { api } from "../../utils/api";
@@ -8,16 +8,20 @@ import {
 	ProductsTableActions,
 	ProductsTableContent,
 	ProductsTablePagination,
-	ProductsTableCenterContent
+	ProductsTableCenterContent,
+	ProductsTableSearchInput,
+	ProductsTableSearchInputContainer
 } from "./styles";
 import NextArrow from "../../assets/images/next-arrow.svg";
 import PreviousArrow from "../../assets/images/previous-arrow.svg";
 import CreateIcon from "../../assets/images/create-icon.svg";
+import EmptySVG from "../../assets/images/empty.svg";
+import SearchIcon from "../../assets/images/search-icon.svg";
 import { ProductModal } from "../ProductModal";
 import { ModalDelete } from "../ModalDelete";
 import { ProductForm } from "../ProductForm";
 import { ProductFormEdit } from "../ProductFormEdit";
-import EmptySVG from "../../assets/images/empty.svg";
+
 
 export function ProductsTable() {
 	const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -27,13 +31,16 @@ export function ProductsTable() {
 	const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
 	const [isProductModalEditVisible, setIsProductModalEditVisible] = useState(false);
 	const [selectedProduct, setSelectedProduct] = useState("");
+	const [searchValue, setSearchValue] = useState("");
+	const [filtredProducts, setFiltredProducts] = useState<Product[]>([]);
+	const searchInputRef = useRef<HTMLInputElement | null>(null);
 
 	const productsPerPage = 6;
 	const pagesVisited = pageNumber * productsPerPage;
 	const pagesLimit = pagesVisited + productsPerPage;
 
 	function handleNextPage() {
-		if (allProducts.length <= pagesLimit) return;
+		if (filtredProducts.length <= pagesLimit) return;
 		setPageNumber(prevState => prevState + 1);
 	}
 
@@ -66,6 +73,7 @@ export function ProductsTable() {
 		async function loadProducts() {
 			const productsResponse = await api.get("/products");
 			setAllProducts(productsResponse.data);
+			setFiltredProducts(productsResponse.data);
 			setProductsShown(productsResponse.data.slice(0, productsPerPage));
 		}
 
@@ -73,8 +81,8 @@ export function ProductsTable() {
 	}, []);
 
 	useEffect(() => {
-		setProductsShown(allProducts.slice(pagesVisited, pagesLimit));
-	}, [pageNumber, allProducts]);
+		setProductsShown(filtredProducts.slice(pagesVisited, pagesLimit));
+	}, [pageNumber, allProducts, filtredProducts]);
 
 	useEffect(() => {
 		const socket = socketIo("http://localhost:3001", {
@@ -100,6 +108,28 @@ export function ProductsTable() {
 
 	}, []);
 
+	function handleSearchInputFocus() {
+		if (searchInputRef.current === null) return;
+		searchInputRef.current.focus();
+	}
+
+	function handleFilterProducts(e: React.ChangeEvent<HTMLInputElement>) {
+		const inputValue = e.target.value;
+		setSearchValue(inputValue);
+
+		if (inputValue.length === 0) {
+			setFiltredProducts(allProducts);
+			return;
+		}
+
+		const productsFiltred = allProducts.filter((product) => {
+			if (product.name.toLowerCase().includes(inputValue)) return product;
+		});
+
+		setPageNumber(0);
+		setFiltredProducts(productsFiltred);
+	}
+
 	return (
 		<>
 			{isModalDeleteVisible && <ModalDelete productId={selectedProduct} onCloseModal={handleCloseModalDelete} />}
@@ -115,51 +145,63 @@ export function ProductsTable() {
 			)}
 			<ProductsTableContainer>
 				<ProductsTableActions>
+					<ProductsTableSearchInputContainer onClick={handleSearchInputFocus}>
+						<img src={SearchIcon} />
+						<ProductsTableSearchInput
+							type="search"
+							placeholder="Buscar"
+							value={searchValue}
+							onChange={(e) => handleFilterProducts(e)}
+							ref={searchInputRef}
+						/>
+					</ProductsTableSearchInputContainer>
+
 					<button onClick={() => setIsProductModalVisible(true)}>
 						<img src={CreateIcon} />
 						<span>Criar produto</span>
 					</button>
 				</ProductsTableActions>
 
-				{allProducts.length === 0
+				{filtredProducts.length === 0
 					? (
 						<ProductsTableCenterContent>
 							<img src={EmptySVG} />
-							<strong>Nenhum produto criado!</strong>
+							<strong>Nenhum produto encontrado</strong>
 						</ProductsTableCenterContent>
 					) : (
-						<><ProductsTableContent>
-							<thead>
-								<tr>
-									<th>Imagem</th>
-									<th>Nome</th>
-									<th>Preço</th>
-									<th>Ações</th>
-								</tr>
-							</thead>
-							<tbody>
-								{productsShown.map((product) => (
-									<ProductCard
-										key={product._id}
-										id={product._id}
-										imagePath={product.imagePath}
-										name={product.name}
-										price={product.price}
-										onSelectProduct={setSelectedProduct}
-										onEdit={handleOpenProductModalEdit}
-										onDelete={handleOpenModalDelete} />
-								))}
-							</tbody>
-						</ProductsTableContent>
-						<ProductsTablePagination>
-							<button onClick={handlePreviousPage}>
-								<img src={PreviousArrow} />Anterior
-							</button>
-							<span>{pageNumber + 1} / {Math.ceil(allProducts.length / productsPerPage)}</span>
-							<button onClick={handleNextPage}>
+						<>
+							<ProductsTableContent>
+								<thead>
+									<tr>
+										<th>Imagem</th>
+										<th>Nome</th>
+										<th>Preço</th>
+										<th>Ações</th>
+									</tr>
+								</thead>
+								<tbody>
+									{productsShown.map((product) => (
+										<ProductCard
+											key={product._id}
+											id={product._id}
+											imagePath={product.imagePath}
+											name={product.name}
+											price={product.price}
+											onSelectProduct={setSelectedProduct}
+											onEdit={handleOpenProductModalEdit}
+											onDelete={handleOpenModalDelete} />
+									))}
+								</tbody>
+							</ProductsTableContent>
+							<ProductsTablePagination>
+								<button onClick={handlePreviousPage}>
+									<img src={PreviousArrow} />Anterior
+								</button>
+								<span>{pageNumber + 1} / {Math.ceil(filtredProducts.length / productsPerPage)}</span>
+								<button onClick={handleNextPage}>
 									Próximo <img src={NextArrow} />
-							</button>
-						</ProductsTablePagination>
+								</button>
+							</ProductsTablePagination>
 						</>
 					)
 				}

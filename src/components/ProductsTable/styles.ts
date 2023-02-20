@@ -12,7 +12,7 @@ export const ProductsTableActions = styled.div`
 	padding:0 16px;
 	margin-bottom:32px;
 	display:flex;
-	justify-content:end;
+	justify-content:space-between;
 	align-items: center;
 
 	button{
@@ -86,6 +86,27 @@ export const ProductsTableCenterContent = styled.div`
 	color: #333;
 	font-size: 24px;
  }
+`;
+
+export const ProductsTableSearchInputContainer = styled.div`
+	display:flex;
+	align-items:center;
+	gap:12px;
+	background: #F5F5F5;
+	border-radius: 8px;
+ 	padding:12px;
+	cursor: text;
+`;
+
+export const ProductsTableSearchInput = styled.input`
+	color: #333;
+	font-size: 16px;
+	border:none;
+	background-color: transparent;
+
+	&:focus{
+		outline: none;
+	}
 `;
 
 
