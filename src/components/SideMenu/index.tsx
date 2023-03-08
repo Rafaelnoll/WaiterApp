@@ -11,6 +11,7 @@ import MenuIcon from "../../assets/images/menu-icon.svg";
 import CloseIcon from "../../assets/images/menu-close-icon.svg";
 import HomeIcon from "../../assets/images/home-icon.svg";
 import ProductsIcon from "../../assets/images/menu-products-icon.svg";
+import CategoriesIcon from "../../assets/images/menu-categories-icon.svg";
 
 
 export function SideMenu() {
@@ -44,6 +45,11 @@ export function SideMenu() {
 							to="/maneger"
 							icon={ProductsIcon}
 							title="Produtos"
+						/>
+						<SideMenuLink
+							to="/categories"
+							icon={CategoriesIcon}
+							title="Categorias"
 						/>
 					</SideMenuLinksContainer>
 				</SideMenuContent>

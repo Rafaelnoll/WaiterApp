@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
+import { CategoriesManeger } from "./pages/CategoriesManeger";
 import { Home } from "./pages/Home";
 import { ProductsManeger } from "./pages/ProductsManeger";
 import { GlobalStyles } from "./styles/GlobalStyles";
@@ -12,6 +13,7 @@ function App() {
 			<BrowserRouter>
 				<Header />
 				<Routes>
+					<Route path="/categories" element={<CategoriesManeger/>} />
 					<Route path="/maneger" element={<ProductsManeger />} />
 					<Route path="/" element={<Home />} />
 				</Routes>

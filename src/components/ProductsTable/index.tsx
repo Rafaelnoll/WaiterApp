@@ -17,7 +17,7 @@ import PreviousArrow from "../../assets/images/previous-arrow.svg";
 import CreateIcon from "../../assets/images/create-icon.svg";
 import EmptySVG from "../../assets/images/empty.svg";
 import SearchIcon from "../../assets/images/search-icon.svg";
-import { ProductModal } from "../ProductModal";
+import { Modal } from "../Modal";
 import { ModalDelete } from "../ModalDelete";
 import { ProductForm } from "../ProductForm";
 import { ProductFormEdit } from "../ProductFormEdit";
@@ -132,16 +132,16 @@ export function ProductsTable() {
 
 	return (
 		<>
-			{isModalDeleteVisible && <ModalDelete productId={selectedProduct} onCloseModal={handleCloseModalDelete} />}
+			{isModalDeleteVisible && <ModalDelete itemId={selectedProduct} onCloseModal={handleCloseModalDelete} path="/products" itemName="produto"/>}
 			{isProductModalEditVisible && (
-				<ProductModal onCloseModal={handleCloseProductModalEdit} title="Editar produto">
+				<Modal onCloseModal={handleCloseProductModalEdit} title="Editar produto">
 					<ProductFormEdit onCloseModal={handleCloseProductModalEdit} productId={selectedProduct} />
-				</ProductModal>
+				</Modal>
 			)}
 			{isProductModalVisible && (
-				<ProductModal onCloseModal={handleCloseProductModal} title="Criar produto">
+				<Modal onCloseModal={handleCloseProductModal} title="Criar produto">
 					<ProductForm onCloseModal={handleCloseProductModal} />
-				</ProductModal>
+				</Modal>
 			)}
 			<ProductsTableContainer>
 				<ProductsTableActions>
