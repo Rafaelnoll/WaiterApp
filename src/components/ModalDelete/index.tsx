@@ -3,43 +3,47 @@ import CloseIcon from "../../assets/images/close-icon.svg";
 import CancelIcon from "../../assets/images/cancel-icon.svg";
 import {
 	ModalDeleteContainer,
-	ProductModalContainer,
-	ProductModalContent,
-	ProductModalHeader
+	ModalContainer,
+	ModalContent,
+	ModalHeader
 } from "./styles";
 import { api } from "../../utils/api";
+import { toast } from "react-toastify";
 
 interface ModalDeleteProps {
 	onCloseModal: () => void;
-	productId: string;
+	itemId: string;
+	path: string;
+	itemName?: string;
 }
 
-export function ModalDelete({ onCloseModal, productId }: ModalDeleteProps) {
+export function ModalDelete({ onCloseModal, itemId, path, itemName }: ModalDeleteProps) {
 
-	async function handleDeleteProduct() {
-		await api.delete(`/products/${productId}`);
+	async function handleDeleteItem() {
+		await api.delete(`${path}/${itemId}`);
+		toast.success(`${itemName} deletado(a)`);
 		onCloseModal();
 	}
 
 	return (
-		<ProductModalContainer>
-			<ProductModalContent>
-				<ProductModalHeader>
+		<ModalContainer>
+			<ModalContent>
+				<ModalHeader>
 					<button onClick={onCloseModal}>
 						<img src={CloseIcon} />
 					</button>
-				</ProductModalHeader>
+				</ModalHeader>
 				<ModalDeleteContainer>
 					<img src={CancelIcon} />
 					<strong>Você tem certeza?</strong>
-					<p>Você realmente deseja excluir este produto? Este processo não pode ser desfeito.</p>
+					<p>Você realmente deseja excluir este(a) {itemName ? itemName : "Item"}? Este processo não pode ser desfeito.</p>
 					<div className="action-buttons">
-						<button className="button-cancel" onClick={onCloseModal}>Cancel</button>
-						<button className="button-delete" onClick={handleDeleteProduct}>Delete</button>
+						<button className="button-cancel" onClick={onCloseModal}>Cancelar</button>
+						<button className="button-delete" onClick={handleDeleteItem}>Deletar</button>
 					</div>
 				</ModalDeleteContainer>
-			</ProductModalContent>
-		</ProductModalContainer>
+			</ModalContent>
+		</ModalContainer>
 	);
 }
 

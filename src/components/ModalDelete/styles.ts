@@ -48,7 +48,7 @@ export const ModalDeleteContainer = styled.div`
 	}
 `;
 
-export const ProductModalContainer = styled.div`
+export const ModalContainer = styled.div`
 	position:absolute;
 	width:100%;
 	height:100%;
@@ -58,7 +58,7 @@ export const ProductModalContainer = styled.div`
 	align-items:center;
 `;
 
-export const ProductModalContent = styled.div`
+export const ModalContent = styled.div`
 	width:100%;
 	max-width: 600px;
 	background: #F8FAFB;
@@ -66,7 +66,7 @@ export const ProductModalContent = styled.div`
 	padding: 24px;
 `;
 
-export const ProductModalHeader = styled.header`
+export const ModalHeader = styled.header`
 	display:flex;
 	justify-content:space-between;
 	align-items:center;
