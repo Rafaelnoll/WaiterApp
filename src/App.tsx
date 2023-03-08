@@ -9,8 +9,8 @@ function App() {
 	return (
 		<>
 			<GlobalStyles />
-			<Header />
 			<BrowserRouter>
+				<Header />
 				<Routes>
 					<Route path="/maneger" element={<ProductsManeger />} />
 					<Route path="/" element={<Home />} />
