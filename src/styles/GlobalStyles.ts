@@ -44,6 +44,9 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     font-family: GeneralSans, sans-serif;
   }
+	a{
+		text-decoration: none;
+	}
   body {
     background: #fafafa;
     color: #333;

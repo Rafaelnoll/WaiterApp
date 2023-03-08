@@ -1,12 +1,13 @@
 import React from "react";
 import { HeaderContainer, Content } from "./styles";
 import Logo from "../../assets/images/logo.svg";
-import { Navbar } from "../Navbar";
+import { SideMenu } from "../SideMenu";
 
 export function Header() {
 	return (
 		<>
 			<HeaderContainer>
+				<SideMenu />
 				<Content>
 					<div className="page-details">
 						<h1>Pedidos</h1>
@@ -16,7 +17,6 @@ export function Header() {
 					<img src={Logo} alt="WaiterApp logo" />
 				</Content>
 			</HeaderContainer>
-			<Navbar />
 		</>
 	);
 }

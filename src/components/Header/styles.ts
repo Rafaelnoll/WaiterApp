@@ -3,9 +3,11 @@ import styled from "styled-components";
 export const HeaderContainer = styled.header`
 	background-color: #D73035;
 	display:flex;
+	flex-direction:column;
 	justify-content:center;
-	align-items:center;
+	align-items:flex-start;
 	height:198px;
+	padding: 0 32px;
 `;
 
 export const Content = styled.div`
