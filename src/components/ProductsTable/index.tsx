@@ -81,6 +81,10 @@ export function ProductsTable() {
 	}, []);
 
 	useEffect(() => {
+		setFiltredProducts(allProducts);
+	}, [allProducts]);
+
+	useEffect(() => {
 		setProductsShown(filtredProducts.slice(pagesVisited, pagesLimit));
 	}, [pageNumber, allProducts, filtredProducts]);
 
@@ -132,7 +136,7 @@ export function ProductsTable() {
 
 	return (
 		<>
-			{isModalDeleteVisible && <ModalDelete itemId={selectedProduct} onCloseModal={handleCloseModalDelete} path="/products" itemName="produto"/>}
+			{isModalDeleteVisible && <ModalDelete itemId={selectedProduct} onCloseModal={handleCloseModalDelete} path="/products" itemName="produto" />}
 			{isProductModalEditVisible && (
 				<Modal onCloseModal={handleCloseProductModalEdit} title="Editar produto">
 					<ProductFormEdit onCloseModal={handleCloseProductModalEdit} productId={selectedProduct} />
