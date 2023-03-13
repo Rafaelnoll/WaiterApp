@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import socketIo from "socket.io-client";
 import { api } from "../../utils/api";
 
 import {
@@ -17,8 +18,6 @@ import EmptySVG from "../../assets/images/empty.svg";
 import SearchIcon from "../../assets/images/search-icon.svg";
 import { Modal } from "../Modal";
 import { ModalDelete } from "../ModalDelete";
-import { ProductForm } from "../ProductForm";
-import { ProductFormEdit } from "../ProductFormEdit";
 import { Category } from "../../types/Category";
 import { CategoryCard } from "../CategoryCard";
 import { CategoryForm } from "../CategoryForm";
@@ -73,22 +72,6 @@ export function CategoriesTable() {
 		setIsModalDeleteVisible(true);
 	}
 
-	useEffect(() => {
-		async function loadProducts() {
-			const categoriesResponse = await api.get("/categories");
-			setAllCategories(categoriesResponse.data);
-			setFiltredCategories(categoriesResponse.data);
-			setCategoriesShown(categoriesResponse.data.slice(0, productsPerPage));
-		}
-
-		loadProducts();
-	}, []);
-
-	useEffect(() => {
-		setCategoriesShown(filtredCategories.slice(pagesVisited, pagesLimit));
-	}, [pageNumber, allCategories, filtredCategories]);
-
-
 	function handleSearchInputFocus() {
 		if (searchInputRef.current === null) return;
 		searchInputRef.current.focus();
@@ -110,6 +93,49 @@ export function CategoriesTable() {
 		setPageNumber(0);
 		setFiltredCategories(productsFiltred);
 	}
+
+	useEffect(() => {
+		setCategoriesShown(filtredCategories.slice(pagesVisited, pagesLimit));
+	}, [pageNumber, allCategories, filtredCategories]);
+
+	useEffect(() => {
+		setFiltredCategories(allCategories);
+	}, [allCategories]);
+
+	useEffect(() => {
+		const socket = socketIo("http://localhost:3001", {
+			transports: ["websocket"],
+		});
+
+		socket.on("category@new", (category) => {
+			setAllCategories(prevState => prevState.concat(category));
+		});
+
+		socket.on("category@deleted", (categoryId) => {
+			setAllCategories(prevState => prevState.filter((category => category._id !== categoryId)));
+		});
+
+		socket.on("category@updated", (categoryReceived) => {
+			setAllCategories(prevState => {
+				const productIndex = prevState.findIndex(category => category._id === categoryReceived._id);
+				const newArray = new Array(...prevState);
+				newArray[productIndex] = categoryReceived;
+				return newArray;
+			});
+		});
+
+	}, []);
+
+	useEffect(() => {
+		async function loadProducts() {
+			const categoriesResponse = await api.get("/categories");
+			setAllCategories(categoriesResponse.data);
+			setFiltredCategories(categoriesResponse.data);
+			setCategoriesShown(categoriesResponse.data.slice(0, productsPerPage));
+		}
+
+		loadProducts();
+	}, []);
 
 	return (
 		<>
