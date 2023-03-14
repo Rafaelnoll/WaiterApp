@@ -19,9 +19,9 @@ import SearchIcon from "../../assets/images/search-icon.svg";
 import { Modal } from "../Modal";
 import { ModalDelete } from "../ModalDelete";
 import { Category } from "../../types/Category";
-import { CategoryForm } from "../CategoryForm";
 import { CategoryFormEdit } from "../CategoryFormEdit";
 import { TableCard } from "../TableCard";
+import { SmallForm } from "../SmallForm";
 
 
 export function CategoriesTable() {
@@ -146,8 +146,8 @@ export function CategoriesTable() {
 				</Modal>
 			)}
 			{isCategoryModalVisible && (
-				<Modal onCloseModal={handleCloseCategoryModal} title="Criar produto">
-					<CategoryForm onCloseModal={handleCloseCategoryModal} />
+				<Modal onCloseModal={handleCloseCategoryModal} title="Criar categoria">
+					<SmallForm itemName="Categoria" onCloseModal={handleCloseCategoryModal} path="/categories"/>
 				</Modal>
 			)}
 			<CategoriesTableContainer>

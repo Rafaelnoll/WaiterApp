@@ -3,16 +3,18 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { api } from "../../utils/api";
 import {
-	IngredientModalForm,
-	IngredientModalFormButtonsContainer,
-	IngredientModalFormLabel,
+	ModalSmallForm,
+	ModalSmallFormButtonsContainer,
+	ModalSmallFormLabel,
 } from "./styles";
 
-interface IngredientFormProps {
+interface SmallFormProps {
 	onCloseModal: () => void;
+	path: string;
+	itemName: string;
 }
 
-export function IngredientForm({ onCloseModal }: IngredientFormProps) {
+export function SmallForm({ onCloseModal, path, itemName }: SmallFormProps) {
 	const [icon, setIcon] = useState("");
 	const [name, setName] = useState("");
 	const [isFormValid, setIsFormValid] = useState(false);
@@ -21,15 +23,15 @@ export function IngredientForm({ onCloseModal }: IngredientFormProps) {
 		handleVerifyForm();
 	});
 
-	async function handleCreateIngredient(e: MouseEvent) {
+	async function handleCreate(e: MouseEvent) {
 		e.preventDefault();
 		if (!isFormValid) return;
 
-		await api.post("/ingredients", { icon, name });
+		await api.post(path, { icon, name });
 
 		setName("");
 		setIcon("");
-		toast.success("Ingrediente criado!");
+		toast.success(`${itemName} criado(a)!`);
 	}
 
 	function handleCancel(e: MouseEvent) {
@@ -52,10 +54,10 @@ export function IngredientForm({ onCloseModal }: IngredientFormProps) {
 	}
 
 	return (
-		<IngredientModalForm>
+		<ModalSmallForm>
 			<div className="form-top-container">
 
-				<IngredientModalFormLabel>
+				<ModalSmallFormLabel>
 					<strong>Icone</strong>
 					<input
 						type="text"
@@ -64,28 +66,28 @@ export function IngredientForm({ onCloseModal }: IngredientFormProps) {
 						value={icon}
 						name="name"
 					/>
-				</IngredientModalFormLabel>
-				<IngredientModalFormLabel>
+				</ModalSmallFormLabel>
+				<ModalSmallFormLabel>
 					<strong>Nome</strong>
 					<input
 						type="text"
-						placeholder="Nome da categoria..."
+						placeholder={`Nome do(a) ${itemName}`}
 						onChange={(e) => setName(e.target.value)}
 						value={name}
 						name="price"
 					/>
-				</IngredientModalFormLabel>
+				</ModalSmallFormLabel>
 			</div>
 
-			<IngredientModalFormButtonsContainer>
-				<button className="button-create" disabled={!isFormValid} onClick={(e) => handleCreateIngredient(e)}>
-					Criar Ingrediente
+			<ModalSmallFormButtonsContainer>
+				<button className="button-create" disabled={!isFormValid} onClick={(e) => handleCreate(e)}>
+					Criar {itemName}
 				</button>
 
 				<button className="button-cancel" onClick={(e) => handleCancel(e)}>
 					Cancelar
 				</button>
-			</IngredientModalFormButtonsContainer>
-		</IngredientModalForm>
+			</ModalSmallFormButtonsContainer>
+		</ModalSmallForm>
 	);
 }

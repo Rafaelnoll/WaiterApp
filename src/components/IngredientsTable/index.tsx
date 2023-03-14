@@ -20,8 +20,8 @@ import { Modal } from "../Modal";
 import { Ingredient } from "../../types/Ingredient";
 import { ModalDelete } from "../ModalDelete";
 import { IngredientFormEdit } from "../IngredientFormEdit";
-import { IngredientForm } from "../IngredientForm";
 import { TableCard } from "../TableCard";
+import { SmallForm } from "../SmallForm";
 
 
 export function IngredientsTable() {
@@ -147,7 +147,7 @@ export function IngredientsTable() {
 			)}
 			{isIngredientModalVisible && (
 				<Modal onCloseModal={handleCloseIngredientModal} title="Criar ingrediente">
-					<IngredientForm onCloseModal={handleCloseIngredientModal} />
+					<SmallForm itemName="Ingrediente" onCloseModal={handleCloseIngredientModal} path="/ingredients" />
 				</Modal>
 			)}
 			<IngredientsTableContainer>
