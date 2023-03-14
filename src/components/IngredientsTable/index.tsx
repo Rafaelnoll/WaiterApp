@@ -141,7 +141,7 @@ export function IngredientsTable() {
 
 					<button onClick={() => setIsIngredientModalVisible(true)}>
 						<img src={CreateIcon} />
-						<span>Criar categoria</span>
+						<span>Criar ingrediente</span>
 					</button>
 				</IngredientsTableActions>
 
@@ -149,7 +149,7 @@ export function IngredientsTable() {
 					? (
 						<IngredientsTableCenterContent>
 							<img src={EmptySVG} />
-							<strong>Nenhuma categoria encontrada</strong>
+							<strong>Nenhum ingrediente encontrado</strong>
 						</IngredientsTableCenterContent>
 					) : (
 						<>
