@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import socketIo from "socket.io-client";
 import { Product } from "../../types/Product";
 import { api } from "../../utils/api";
-import { ProductCard } from "../ProductCard";
 import {
 	ProductsTableContainer,
 	ProductsTableActions,
@@ -21,6 +20,7 @@ import { Modal } from "../Modal";
 import { ModalDelete } from "../ModalDelete";
 import { ProductForm } from "../ProductForm";
 import { ProductFormEdit } from "../ProductFormEdit";
+import { TableCard } from "../TableCard";
 
 
 export function ProductsTable() {
@@ -185,13 +185,13 @@ export function ProductsTable() {
 								</thead>
 								<tbody>
 									{productsShown.map((product) => (
-										<ProductCard
+										<TableCard
 											key={product._id}
 											id={product._id}
 											imagePath={product.imagePath}
 											name={product.name}
 											price={product.price}
-											onSelectProduct={setSelectedProduct}
+											onSelectItem={setSelectedProduct}
 											onEdit={handleOpenProductModalEdit}
 											onDelete={handleOpenModalDelete} />
 									))}

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ProductCardTr = styled.tr`
+export const TableCardTr = styled.tr`
 	background-color:red;
 	text-align:center;
 	background: #FFFFFF;
@@ -14,13 +14,13 @@ export const ProductCardTr = styled.tr`
 	}
 `;
 
-export const ProductCardImage = styled.img`
+export const TableCardImage = styled.img`
 	max-width:120px;
 	max-height: 60px;
 	border-radius:8px;
 `;
 
-export const ProductCardActions = styled.div`
+export const TableCardActions = styled.div`
 	display:flex;
 	justify-content:center;
 	align-items:center;

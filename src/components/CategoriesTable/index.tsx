@@ -19,9 +19,9 @@ import SearchIcon from "../../assets/images/search-icon.svg";
 import { Modal } from "../Modal";
 import { ModalDelete } from "../ModalDelete";
 import { Category } from "../../types/Category";
-import { CategoryCard } from "../CategoryCard";
 import { CategoryForm } from "../CategoryForm";
 import { CategoryFormEdit } from "../CategoryFormEdit";
+import { TableCard } from "../TableCard";
 
 
 export function CategoriesTable() {
@@ -187,12 +187,12 @@ export function CategoriesTable() {
 								</thead>
 								<tbody>
 									{categoriesShown.map((category) => (
-										<CategoryCard
+										<TableCard
 											key={category._id}
 											icon={category.icon}
 											name={category.name}
 											id={category._id}
-											onSelectCategory={setSelectedCategory}
+											onSelectItem={setSelectedCategory}
 											onEdit={handleOpenCategoryModalEdit}
 											onDelete={handleOpenModalDelete}
 										/>

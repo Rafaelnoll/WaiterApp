@@ -21,7 +21,7 @@ import { Ingredient } from "../../types/Ingredient";
 import { ModalDelete } from "../ModalDelete";
 import { IngredientFormEdit } from "../IngredientFormEdit";
 import { IngredientForm } from "../IngredientForm";
-import { IngredientCard } from "../IngredientCard";
+import { TableCard } from "../TableCard";
 
 
 export function IngredientsTable() {
@@ -187,14 +187,14 @@ export function IngredientsTable() {
 								</thead>
 								<tbody>
 									{ingredientsShown.map((ingredient) => (
-										<IngredientCard
+										<TableCard
 											key={ingredient._id}
 											icon={ingredient.icon}
 											id={ingredient._id}
 											name={ingredient.name}
 											onDelete={handleOpenModalDelete}
 											onEdit={handleOpenIngredientModalEdit}
-											onSelectIngredient={setSelectedIngredient}
+											onSelectItem={setSelectedIngredient}
 										/>
 									))}
 								</tbody>
