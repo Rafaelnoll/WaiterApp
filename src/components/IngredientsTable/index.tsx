@@ -19,9 +19,9 @@ import SearchIcon from "../../assets/images/search-icon.svg";
 import { Modal } from "../Modal";
 import { Ingredient } from "../../types/Ingredient";
 import { ModalDelete } from "../ModalDelete";
-import { IngredientFormEdit } from "../IngredientFormEdit";
 import { TableCard } from "../TableCard";
 import { SmallForm } from "../SmallForm";
+import { SmallFormEdit } from "../SmallFormEdit";
 
 
 export function IngredientsTable() {
@@ -142,7 +142,7 @@ export function IngredientsTable() {
 			{isModalDeleteVisible && <ModalDelete path="/ingredients" itemName="ingrediente" itemId={selectedIngredient} onCloseModal={handleCloseModalDelete} />}
 			{isIngredientModalEditVisible && (
 				<Modal onCloseModal={handleCloseIngredientModalEdit} title="Editar Ingrediente">
-					<IngredientFormEdit onCloseModal={handleCloseIngredientModalEdit} ingredientId={selectedIngredient} />
+					<SmallFormEdit itemId={selectedIngredient} itemName="Ingrediente" onCloseModal={handleCloseIngredientModalEdit} path="/ingredients" />
 				</Modal>
 			)}
 			{isIngredientModalVisible && (

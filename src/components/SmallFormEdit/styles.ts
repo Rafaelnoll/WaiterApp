@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const CategoryModalForm = styled.form`
+export const ModalSmallFormEdit = styled.form`
 	.form-top-container{
 		display:flex;
 		gap:16px;
@@ -19,7 +19,7 @@ export const CategoryModalForm = styled.form`
 	}
 `;
 
-export const CategoryModalFormLabel = styled.div`
+export const ModalSmallFormEditLabel = styled.div`
 	display:flex;
 	flex-direction:column;
 	width:100%;
@@ -39,7 +39,7 @@ export const CategoryModalFormLabel = styled.div`
 	}
 `;
 
-export const CategoryModalFormButtonsContainer = styled.div`
+export const ModalSmallFormEditButtonsContainer = styled.div`
 	display:flex;
 	flex-direction:column;
 	gap:12px;

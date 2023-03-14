@@ -1,49 +1,55 @@
 import React, { MouseEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Ingredient } from "../../types/Ingredient";
 import { api } from "../../utils/api";
 import {
-	IngredientsModalForm,
-	IngredientsModalFormButtonsContainer,
-	IngredientsModalFormLabel,
+	ModalSmallFormEdit,
+	ModalSmallFormEditButtonsContainer,
+	ModalSmallFormEditLabel,
 } from "./styles";
 
-interface IngredientFormEditProps {
+interface SmallFormEditProps {
 	onCloseModal: () => void;
-	ingredientId: string;
+	itemId: string;
+	path: string;
+	itemName:string;
 }
 
-export function IngredientFormEdit({ onCloseModal, ingredientId }: IngredientFormEditProps) {
+interface ItemProps {
+	name: string;
+	icon: string;
+}
+
+export function SmallFormEdit({ onCloseModal, itemId, path, itemName }: SmallFormEditProps) {
 	const [name, setName] = useState("");
 	const [icon, setIcon] = useState("");
 	const [isFormValid, setIsFormValid] = useState(false);
 
 	useEffect(() => {
-		async function loadIngredientData() {
-			const ingredientResponse = await api.get(`/ingredients/${ingredientId}`);
+		async function loadItemData() {
+			const itemResponse = await api.get(`${path}/${itemId}`);
 
-			const ingredient: Ingredient = ingredientResponse.data;
+			const item: ItemProps = itemResponse.data;
 
-			setName(ingredient.name);
-			setIcon(ingredient.icon);
+			setName(item.name);
+			setIcon(item.icon);
 		}
 
-		loadIngredientData();
+		loadItemData();
 	}, []);
 
 	useEffect(() => {
 		handleVerifyForm();
 	});
 
-	async function handleEditIngredient(e: MouseEvent) {
+	async function handleEditItem(e: MouseEvent) {
 		e.preventDefault();
 		if (!isFormValid) return;
 
-		await api.patch(`/ingredients/${ingredientId}`, { name, icon });
+		await api.patch(`${path}/${itemId}`, { name, icon });
 
 		onCloseModal();
-		toast.success("Ingrediente editado!");
+		toast.success(`${itemName} editado(a)`);
 	}
 
 	function handleCancel(e: MouseEvent) {
@@ -65,10 +71,10 @@ export function IngredientFormEdit({ onCloseModal, ingredientId }: IngredientFor
 	}
 
 	return (
-		<IngredientsModalForm>
+		<ModalSmallFormEdit>
 			<div className="form-top-container">
 
-				<IngredientsModalFormLabel>
+				<ModalSmallFormEditLabel>
 					<strong>Icone</strong>
 					<input
 						type="Text"
@@ -77,28 +83,28 @@ export function IngredientFormEdit({ onCloseModal, ingredientId }: IngredientFor
 						value={icon}
 						name="icon"
 					/>
-				</IngredientsModalFormLabel>
-				<IngredientsModalFormLabel>
+				</ModalSmallFormEditLabel>
+				<ModalSmallFormEditLabel>
 					<strong>Nome</strong>
 					<input
 						type="text"
-						placeholder="Nome do ingrediente..."
+						placeholder="Nome da categoria..."
 						onChange={(e) => setName(e.target.value)}
 						value={name}
 						name="name"
 					/>
-				</IngredientsModalFormLabel>
+				</ModalSmallFormEditLabel>
 			</div>
 
-			<IngredientsModalFormButtonsContainer>
-				<button className="button-create" disabled={!isFormValid} onClick={(e) => handleEditIngredient(e)}>
-					Editar Ingrediente
+			<ModalSmallFormEditButtonsContainer>
+				<button className="button-create" disabled={!isFormValid} onClick={(e) => handleEditItem(e)}>
+					Editar Categoria
 				</button>
 
 				<button className="button-cancel" onClick={(e) => handleCancel(e)}>
 					Cancelar
 				</button>
-			</IngredientsModalFormButtonsContainer>
-		</IngredientsModalForm>
+			</ModalSmallFormEditButtonsContainer>
+		</ModalSmallFormEdit>
 	);
 }
