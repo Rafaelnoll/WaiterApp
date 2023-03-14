@@ -2,6 +2,7 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Category } from "../../types/Category";
+import { Ingredient } from "../../types/Ingredient";
 import { api } from "../../utils/api";
 import {
 	ProductModalForm,
@@ -22,16 +23,23 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 	const [name, setName] = useState("");
 	const [price, setPrice] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState("");
+	const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+	const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 	const [description, setDescription] = useState("");
 	const [isFormValid, setIsFormValid] = useState(false);
 
 	useEffect(() => {
-		async function loadCategories() {
-			const categoriesResponse = await api.get("/categories");
+		async function loadCategoriesAndIngredients() {
+			const [categoriesResponse, ingredientsResponse] = await Promise.all([
+				api.get("/categories"),
+				api.get("/ingredients")
+			]);
+
 			setCategories(categoriesResponse.data);
+			setIngredients(ingredientsResponse.data);
 		}
 
-		loadCategories();
+		loadCategoriesAndIngredients();
 	}, []);
 
 	useEffect(() => {
@@ -45,10 +53,29 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 		setFile(file);
 	}
 
+	function handleSelectIngredient(ingredientId: string) {
+		const alreadyChecked = selectedIngredients.findIndex((id) => id === ingredientId);
+
+		if (alreadyChecked === -1) {
+			setSelectedIngredients(prevState => {
+				prevState.push(ingredientId);
+				return prevState;
+			});
+			return;
+		}
+
+		setSelectedIngredients((prevState) => prevState.filter((id) => id !== selectedIngredients[alreadyChecked]));
+
+	}
+
 	async function handleCreateProduct(e: MouseEvent) {
 		e.preventDefault();
 		if (!file) return;
 		if (!isFormValid) return;
+
+		const selectedIngredientsModified = selectedIngredients.map((id) => {
+			return ingredients[ingredients.findIndex((ingredient) => ingredient._id === id)];
+		});
 
 		const formData = new FormData();
 
@@ -57,6 +84,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 		formData.append("description", description);
 		formData.append("price", price);
 		formData.append("category", selectedCategory);
+		formData.append("ingredients", JSON.stringify(selectedIngredientsModified));
 
 		await api.post("/products", formData);
 
@@ -64,6 +92,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 		setPrice("");
 		setSelectedCategory("");
 		setDescription("");
+		setSelectedIngredients([]);
 		setFile(null);
 		toast.success("Produto criado!");
 	}
@@ -131,6 +160,21 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 						<option value="" >Selecionar categoria</option>
 						{categories.map((category) => (
 							<option key={category._id} value={category._id}>{category.icon} {category.name}</option>
+						))}
+					</select>
+				</ProductModalFormSelector>
+
+				<ProductModalFormSelector>
+					<span>Ingredientes</span>
+					<select
+						onChange={(e) => handleSelectIngredient(e.target.value)}
+						value={selectedIngredients}
+						name="category"
+						multiple
+					>
+						<option value="" disabled>Selecionar ingredientes</option>
+						{ingredients.map((ingredient) => (
+							<option key={ingredient._id} value={ingredient._id}>{ingredient.icon} {ingredient.name}</option>
 						))}
 					</select>
 				</ProductModalFormSelector>

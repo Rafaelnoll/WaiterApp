@@ -43,6 +43,7 @@ export const ProductModalFormSelector = styled.div`
 	display:flex;
 	flex-direction:column;
 	width:100%;
+	max-height:200px;
 
 	span{
 		text-align:end;
@@ -56,6 +57,11 @@ export const ProductModalFormSelector = styled.div`
 		border-radius: 4px;
 		padding: 12px 8px;
 		font-size:16px;
+	}
+
+	option{
+		width:100%;
+		padding: 8px 0;
 	}
 `;
 
