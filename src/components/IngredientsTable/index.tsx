@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import socketIo from "socket.io-client";
 import { api } from "../../utils/api";
 
 import {
@@ -101,6 +102,29 @@ export function IngredientsTable() {
 		setFiltredIngredients(allIngredients);
 	}, [allIngredients]);
 
+	useEffect(() => {
+		const socket = socketIo("http://localhost:3001", {
+			transports: ["websocket"],
+		});
+
+		socket.on("ingredient@new", (ingredient) => {
+			setAllIngredients(prevState => prevState.concat(ingredient));
+		});
+
+		socket.on("ingredient@deleted", (ingredientId) => {
+			setAllIngredients(prevState => prevState.filter((ingredient => ingredient._id !== ingredientId)));
+		});
+
+		socket.on("ingredient@updated", (ingredientReceived) => {
+			setAllIngredients(prevState => {
+				const ingredientIndex = prevState.findIndex(ingredient => ingredient._id === ingredientReceived._id);
+				const newArray = new Array(...prevState);
+				newArray[ingredientIndex] = ingredientReceived;
+				return newArray;
+			});
+		});
+
+	}, []);
 
 	useEffect(() => {
 		async function loadIngredients() {
