@@ -2,6 +2,7 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Category } from "../../types/Category";
+import { Ingredient } from "../../types/Ingredient";
 import { Product } from "../../types/Product";
 import { api } from "../../utils/api";
 import {
@@ -24,14 +25,21 @@ export function ProductFormEdit({ onCloseModal, productId }: ProductFormEditProp
 	const [name, setName] = useState("");
 	const [price, setPrice] = useState("");
 	const [selectedCategory, setSelectedCategory] = useState("");
+	const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+	const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
 	const [description, setDescription] = useState("");
 	const [isFormValid, setIsFormValid] = useState(false);
 
 	useEffect(() => {
 		async function loadFormData() {
-			const [categoriesResponse, productResponse] = await Promise.all([
+			const [
+				categoriesResponse,
+				productResponse,
+				ingredientsResponse,
+			] = await Promise.all([
 				api.get("/categories"),
-				api.get(`/products/${productId}`)
+				api.get(`/products/${productId}`),
+				api.get("/ingredients"),
 			]);
 
 			const product: Product = productResponse.data;
@@ -42,14 +50,37 @@ export function ProductFormEdit({ onCloseModal, productId }: ProductFormEditProp
 			setDescription(product.description);
 			setFile(product.imagePath);
 			setCategories(categoriesResponse.data);
+			setIngredients(ingredientsResponse.data);
+
+			if (product.ingredients) {
+				setSelectedIngredients(product.ingredients.map((ingredient) => ingredient._id));
+			}
+
 		}
 
 		loadFormData();
+
 	}, []);
 
 	useEffect(() => {
 		handleVerifyForm();
 	});
+
+	function handleSelectIngredient(ingredientId: string) {
+		const alreadyChecked = selectedIngredients.findIndex((id) => id === ingredientId);
+
+		if (alreadyChecked === -1) {
+			setSelectedIngredients(prevState => {
+				prevState.push(ingredientId);
+				return prevState;
+			});
+			return;
+		}
+
+		setSelectedIngredients((prevState) => prevState.filter((id) => id !== selectedIngredients[alreadyChecked]));
+
+	}
+
 
 	function handleSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
 		if (!e.target.files) return;
@@ -63,11 +94,16 @@ export function ProductFormEdit({ onCloseModal, productId }: ProductFormEditProp
 		if (!file) return;
 		if (!isFormValid) return;
 
+		const selectedIngredientsModified = selectedIngredients.map((id) => {
+			return ingredients[ingredients.findIndex((ingredient) => ingredient._id === id)];
+		});
+
 		const modifiedProduct = {
 			name,
 			price,
 			description,
-			category: selectedCategory
+			category: selectedCategory,
+			ingredients: JSON.stringify(selectedIngredientsModified),
 		};
 
 		await api.patch(`/products/${productId}`, modifiedProduct);
@@ -139,6 +175,21 @@ export function ProductFormEdit({ onCloseModal, productId }: ProductFormEditProp
 						<option value="" >Selecionar categoria</option>
 						{categories.map((category) => (
 							<option key={category._id} value={category._id}>{category.icon} {category.name}</option>
+						))}
+					</select>
+				</ProductModalFormSelector>
+
+				<ProductModalFormSelector>
+					<span>Ingredientes</span>
+					<select
+						onChange={(e) => handleSelectIngredient(e.target.value)}
+						value={selectedIngredients}
+						name="ingredients"
+						multiple
+					>
+						<option value="" disabled>Selecionar ingredientes</option>
+						{ingredients.map((ingredient) => (
+							<option key={ingredient._id} value={ingredient._id}>{ingredient.icon} {ingredient.name}</option>
 						))}
 					</select>
 				</ProductModalFormSelector>

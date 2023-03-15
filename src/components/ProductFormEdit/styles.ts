@@ -43,6 +43,7 @@ export const ProductModalFormSelector = styled.div`
 	display:flex;
 	flex-direction:column;
 	width:100%;
+	max-height:200px;
 
 	span{
 		text-align:end;
@@ -57,6 +58,23 @@ export const ProductModalFormSelector = styled.div`
 		padding: 12px 8px;
 		font-size:16px;
 	}
+
+	select[multiple]:focus option:checked {
+  		background: #D73035 linear-gradient(0deg, #D73035 0%, #D73035 100%);
+	}
+
+	option{
+		width:100%;
+		padding: 8px 4px;
+		border-radius:4px;
+		margin: 4px;
+	}
+
+	option:checked{
+		background-color:#D73035;
+		color:#fff;
+	}
+
 `;
 
 export const ProductModalFormTextAreaContainer = styled.div`

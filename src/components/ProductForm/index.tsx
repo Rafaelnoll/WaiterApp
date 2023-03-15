@@ -169,7 +169,7 @@ export function ProductForm({ onCloseModal }: ProductFormProps) {
 					<select
 						onChange={(e) => handleSelectIngredient(e.target.value)}
 						value={selectedIngredients}
-						name="category"
+						name="ingredients"
 						multiple
 					>
 						<option value="" disabled>Selecionar ingredientes</option>

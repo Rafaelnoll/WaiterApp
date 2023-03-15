@@ -61,7 +61,14 @@ export const ProductModalFormSelector = styled.div`
 
 	option{
 		width:100%;
-		padding: 8px 0;
+		padding: 8px 4px;
+		border-radius:4px;
+		margin: 4px;
+	}
+
+	option:checked option:hover{
+		background-color:#D73035;
+		color:#fff;
 	}
 `;
 
