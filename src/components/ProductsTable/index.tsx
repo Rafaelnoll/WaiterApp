@@ -143,7 +143,7 @@ export function ProductsTable() {
 
 	function handleSelectProductDetails(productId: string) {
 		const productIndex = allProducts.findIndex((product) => product._id === productId);
-		return	allProducts[productIndex];
+		return allProducts[productIndex];
 	}
 
 	return (
@@ -161,7 +161,7 @@ export function ProductsTable() {
 			)}
 			{isProductDetailsModalVisible && (
 				<Modal onCloseModal={() => setIsProductDetailsModalVisible(false)} title="Detalhes do produto">
-					<ProductDetails product={handleSelectProductDetails(selectedProduct)}/>
+					<ProductDetails product={handleSelectProductDetails(selectedProduct)} />
 				</Modal>
 			)}
 			<ProductsTableContainer>
@@ -212,6 +212,7 @@ export function ProductsTable() {
 											onEdit={handleOpenProductModalEdit}
 											onDelete={handleOpenModalDelete}
 											onSeeDetails={handleOpenProductModalDetails}
+											showButtonDetails={true}
 										/>
 									))}
 								</tbody>

@@ -19,6 +19,7 @@ interface TableCardProps {
 	onEdit: () => void;
 	onDelete: () => void;
 	onSeeDetails: () => void;
+	showButtonDetails?: boolean;
 }
 
 export function TableCard({
@@ -31,6 +32,7 @@ export function TableCard({
 	onDelete,
 	onEdit,
 	onSeeDetails,
+	showButtonDetails = false,
 }: TableCardProps) {
 
 	function handleSeeItemDetails() {
@@ -56,7 +58,7 @@ export function TableCard({
 			{price && <td>{formatCurrency(price)}</td>}
 			<td>
 				<TableCardActions>
-					<button onClick={handleSeeItemDetails}><img src={DetailsIcon} /></button>
+					{showButtonDetails && <button onClick={handleSeeItemDetails}><img src={DetailsIcon} /></button>}
 					<button onClick={handleEditItem}><img src={EditIcon} /></button>
 					<button onClick={handleDeleteItem}><img src={DeleteIcon} /></button>
 				</TableCardActions>
