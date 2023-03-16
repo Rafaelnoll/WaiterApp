@@ -21,19 +21,22 @@ import { ModalDelete } from "../ModalDelete";
 import { ProductForm } from "../ProductForm";
 import { ProductFormEdit } from "../ProductFormEdit";
 import { TableCard } from "../TableCard";
-
+import { ProductDetails } from "../ProductDetails";
 
 export function ProductsTable() {
 	const [allProducts, setAllProducts] = useState<Product[]>([]);
 	const [productsShown, setProductsShown] = useState<Product[]>([]);
 	const [pageNumber, setPageNumber] = useState(0);
-	const [isProductModalVisible, setIsProductModalVisible] = useState(false);
-	const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
-	const [isProductModalEditVisible, setIsProductModalEditVisible] = useState(false);
 	const [selectedProduct, setSelectedProduct] = useState("");
 	const [searchValue, setSearchValue] = useState("");
 	const [filtredProducts, setFiltredProducts] = useState<Product[]>([]);
 	const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+	// Modals
+	const [isProductModalVisible, setIsProductModalVisible] = useState(false);
+	const [isProductDetailsModalVisible, setIsProductDetailsModalVisible] = useState(false);
+	const [isModalDeleteVisible, setIsModalDeleteVisible] = useState(false);
+	const [isProductModalEditVisible, setIsProductModalEditVisible] = useState(false);
 
 	const productsPerPage = 6;
 	const pagesVisited = pageNumber * productsPerPage;
@@ -67,6 +70,10 @@ export function ProductsTable() {
 
 	function handleOpenModalDelete() {
 		setIsModalDeleteVisible(true);
+	}
+
+	function handleOpenProductModalDetails() {
+		setIsProductDetailsModalVisible(true);
 	}
 
 	useEffect(() => {
@@ -134,6 +141,11 @@ export function ProductsTable() {
 		setFiltredProducts(productsFiltred);
 	}
 
+	function handleSelectProductDetails(productId: string) {
+		const productIndex = allProducts.findIndex((product) => product._id === productId);
+		return	allProducts[productIndex];
+	}
+
 	return (
 		<>
 			{isModalDeleteVisible && <ModalDelete itemId={selectedProduct} onCloseModal={handleCloseModalDelete} path="/products" itemName="produto" />}
@@ -145,6 +157,11 @@ export function ProductsTable() {
 			{isProductModalVisible && (
 				<Modal onCloseModal={handleCloseProductModal} title="Criar produto">
 					<ProductForm onCloseModal={handleCloseProductModal} />
+				</Modal>
+			)}
+			{isProductDetailsModalVisible && (
+				<Modal onCloseModal={() => setIsProductDetailsModalVisible(false)} title="Detalhes do produto">
+					<ProductDetails product={handleSelectProductDetails(selectedProduct)}/>
 				</Modal>
 			)}
 			<ProductsTableContainer>
@@ -193,7 +210,9 @@ export function ProductsTable() {
 											price={product.price}
 											onSelectItem={setSelectedProduct}
 											onEdit={handleOpenProductModalEdit}
-											onDelete={handleOpenModalDelete} />
+											onDelete={handleOpenModalDelete}
+											onSeeDetails={handleOpenProductModalDetails}
+										/>
 									))}
 								</tbody>
 							</ProductsTableContent>

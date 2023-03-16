@@ -4,6 +4,7 @@ import {
 	TableCardImage,
 	TableCardActions,
 } from "./styles";
+import DetailsIcon from "../../assets/images/details-icon.svg";
 import EditIcon from "../../assets/images/edit-icon.svg";
 import DeleteIcon from "../../assets/images/delete-icon.svg";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -17,6 +18,7 @@ interface TableCardProps {
 	onSelectItem: (id: string) => void;
 	onEdit: () => void;
 	onDelete: () => void;
+	onSeeDetails: () => void;
 }
 
 export function TableCard({
@@ -27,8 +29,14 @@ export function TableCard({
 	id,
 	onSelectItem,
 	onDelete,
-	onEdit
+	onEdit,
+	onSeeDetails,
 }: TableCardProps) {
+
+	function handleSeeItemDetails() {
+		onSelectItem(id);
+		onSeeDetails();
+	}
 
 	function handleEditItem() {
 		onSelectItem(id);
@@ -48,6 +56,7 @@ export function TableCard({
 			{price && <td>{formatCurrency(price)}</td>}
 			<td>
 				<TableCardActions>
+					<button onClick={handleSeeItemDetails}><img src={DetailsIcon} /></button>
 					<button onClick={handleEditItem}><img src={EditIcon} /></button>
 					<button onClick={handleDeleteItem}><img src={DeleteIcon} /></button>
 				</TableCardActions>

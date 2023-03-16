@@ -5,7 +5,7 @@ export interface Product {
 	imagePath: string,
 	price: number,
 	category:string;
-	ingredients?: Array<{
+	ingredients: Array<{
 		name: string,
 		icon: string,
 		_id: string,
